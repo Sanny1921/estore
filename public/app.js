@@ -2,18 +2,18 @@
 // Talks to the existing backend in server/index.js (/send-otp, /verify-otp).
 
 const PRODUCTS = [
-  { id: 1,  name: "Wireless Headphones",  price: 1499, emoji: "🎧", bg: "#e0e7ff", tag: "Electronics" },
-  { id: 2,  name: "Smart Watch",          price: 2499, emoji: "⌚", bg: "#fef3c7", tag: "Electronics" },
-  { id: 3,  name: "Bluetooth Speaker",    price: 999,  emoji: "🔊", bg: "#dcfce7", tag: "Electronics" },
-  { id: 4,  name: "Running Shoes",        price: 1899, emoji: "👟", bg: "#fee2e2", tag: "Fashion" },
-  { id: 5,  name: "Backpack",             price: 1199, emoji: "🎒", bg: "#ede9fe", tag: "Fashion" },
-  { id: 6,  name: "Sunglasses",           price: 699,  emoji: "🕶️", bg: "#cffafe", tag: "Fashion" },
-  { id: 7,  name: "Coffee Mug",           price: 349,  emoji: "☕", bg: "#fef9c3", tag: "Home" },
-  { id: 8,  name: "Desk Lamp",            price: 899,  emoji: "💡", bg: "#fce7f3", tag: "Home" },
-  { id: 9,  name: "Water Bottle",         price: 449,  emoji: "🥤", bg: "#e0f2fe", tag: "Home" },
-  { id: 10, name: "Keyboard",             price: 1299, emoji: "⌨️", bg: "#f1f5f9", tag: "Electronics" },
-  { id: 11, name: "Mouse",                price: 549,  emoji: "🖱️", bg: "#ecfccb", tag: "Electronics" },
-  { id: 12, name: "Notebook Set",         price: 299,  emoji: "📓", bg: "#ffedd5", tag: "Stationery" },
+  { id: 1,  name: "Wireless Headphones",  price: 1499, icon: "headphones", bg: "#e0e7ff", tag: "Electronics" },
+  { id: 2,  name: "Smart Watch",          price: 2499, icon: "watch",      bg: "#fef3c7", tag: "Electronics" },
+  { id: 3,  name: "Bluetooth Speaker",    price: 999,  icon: "speaker",    bg: "#dcfce7", tag: "Electronics" },
+  { id: 4,  name: "Running Shoes",        price: 1899, icon: "shoes",      bg: "#fee2e2", tag: "Fashion" },
+  { id: 5,  name: "Backpack",             price: 1199, icon: "backpack",   bg: "#ede9fe", tag: "Fashion" },
+  { id: 6,  name: "Sunglasses",           price: 699,  icon: "sunglasses", bg: "#cffafe", tag: "Fashion" },
+  { id: 7,  name: "Coffee Mug",           price: 349,  icon: "mug",        bg: "#fef9c3", tag: "Home" },
+  { id: 8,  name: "Desk Lamp",            price: 899,  icon: "lamp",       bg: "#fce7f3", tag: "Home" },
+  { id: 9,  name: "Water Bottle",         price: 449,  icon: "bottle",     bg: "#e0f2fe", tag: "Home" },
+  { id: 10, name: "Keyboard",             price: 1299, icon: "keyboard",   bg: "#f1f5f9", tag: "Electronics" },
+  { id: 11, name: "Mouse",                price: 549,  icon: "mouse",      bg: "#ecfccb", tag: "Electronics" },
+  { id: 12, name: "Notebook Set",         price: 299,  icon: "notebook",   bg: "#ffedd5", tag: "Stationery" },
 ];
 
 const state = {
@@ -42,7 +42,7 @@ function renderProducts(filter = "") {
   $("emptyMsg").hidden = items.length > 0;
   grid.innerHTML = items.map(p => `
     <div class="product-card">
-      <div class="product-thumb" style="background:${p.bg}">${p.emoji}</div>
+      <div class="product-thumb" style="background:${p.bg}">${icon(p.icon, 56)}</div>
       <div class="product-body">
         <div class="product-name">${p.name}</div>
         <div class="product-meta">${p.tag}</div>
@@ -73,7 +73,7 @@ function renderCart() {
   } else {
     box.innerHTML = entries.map(({ product, qty }) => `
       <div class="cart-item">
-        <div class="cart-item-thumb" style="background:${product.bg}">${product.emoji}</div>
+        <div class="cart-item-thumb" style="background:${product.bg}">${icon(product.icon, 24)}</div>
         <div class="cart-item-info">
           <div class="cart-item-name">${product.name}</div>
           <div class="cart-item-price">${inr(product.price)} × ${qty}</div>
@@ -83,7 +83,7 @@ function renderCart() {
           <span>${qty}</span>
           <button data-inc="${product.id}">+</button>
         </div>
-        <button class="remove-btn" data-remove="${product.id}" title="Remove">🗑</button>
+        <button class="remove-btn" data-remove="${product.id}" title="Remove">${icon("trash", 16)}</button>
       </div>
     `).join("");
   }
@@ -216,7 +216,7 @@ function checkout() {
   if (!cartEntries().length) return;
   if (!state.token) {
     state.pendingCheckout = true;
-    openAuth("Verify your email to place the order.", "ok");
+    openAuth("Verify your email to complete checkout.", "ok");
     return;
   }
   placeOrder();
