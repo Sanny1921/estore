@@ -1,4 +1,12 @@
 {
+  "name": "estore",
+  "version": "1.0.0",
+  "description": "E-Store: storefront frontend with email OTP verification and cart, Express backend",
+  "type": "module",
+  "main": "server/index.js",
+  "scripts": {
+    "start": "node server/index.js"
+  },
   "dependencies": {
     "cors": "^2.8.6",
     "express": "^5.3.0",

@@ -2,6 +2,10 @@ import express from 'express';
 import cors from 'cors';
 import nodemailer from 'nodemailer';
 import jwt from 'jsonwebtoken';
+import path from 'path';
+import { fileURLToPath } from 'url';
+
+const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
 const transporter = nodemailer.createTransport({
     service: 'gmail',
@@ -12,14 +16,13 @@ const transporter = nodemailer.createTransport({
 });
 
 const app = express();
-const PORT = 3000;
+const PORT = process.env.PORT || 3000;
 
 app.use(cors());
 app.use(express.json());
 
-app.get('/', (req, res) => {
-  res.send('Hello, World!');
-});
+// Serve the frontend (public/ folder: index.html, styles.css, app.js)
+app.use(express.static(path.join(__dirname, '..', 'public')));
 
 const otpStore={}
 let otp;
